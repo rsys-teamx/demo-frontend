@@ -1,0 +1,35 @@
+.btn {
+	width: 100%;
+	display: inline-block;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 16px;
+	color: #ffffff;
+	border-radius: 5px;
+	&--primary {
+		padding: 12px 15px;
+		border: 1px solid $primary-brand-color;
+		background: $primary-brand-color;
+		transition: all 0.3s ease;
+		&:hover {
+			background: darken($primary-brand-color, 10%);
+			border: 1px solid darken($primary-brand-color, 10%);
+		}
+	}
+	&--secondary {
+		// color: $primary-brand-color;
+		color: $secondary-brand-color;
+		padding: 12px 15px;
+		background: $white;
+		border: 1px solid $secondary-brand-color;
+		transition: all 0.3s ease;
+		&:hover {
+			background: lighten($secondary-brand-color, 35%);
+			// background: $primary-brand-color-dark;
+		}
+	}
+	&--logout {
+		min-width: 100px;
+		padding: 7px 15px;
+	}
+}

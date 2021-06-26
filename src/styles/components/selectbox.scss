@@ -1,0 +1,11 @@
+select {
+	width: 100%;
+	-webkit-appearance: none;
+	border: 1px solid #e3e3e3;
+	font-size: 14px;
+	line-height: 16px;
+	padding: 12px 15px;
+	border-radius: 5px;
+	background: rgba($primary-brand-color, 0.1)
+		url("../../assets/dropdown_arrow.svg") right 10px center no-repeat;
+}
