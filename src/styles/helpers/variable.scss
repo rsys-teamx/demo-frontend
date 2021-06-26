@@ -1,0 +1,48 @@
+$theme-colors: (
+	"primary": #0077bf,
+	"secondary": #ef4e58,
+);
+
+$white: #fff;
+$black: #000;
+$red: #ef4e58;
+$grey: #52545b;
+$green: #219653;
+
+$primary-brand-color: #093fa3;
+$primary-brand-color--dark: #016cad;
+$secondary-brand-color: #eb5790;
+// $secondary-brand-color: #f239b0;
+$secondary-brand-color--dark: #f93d49;
+
+$primary-text-color: #000a30;
+$secondary-text-color: #555555;
+$teritary-text-color: #8a8b8a;
+
+$text-dark: #211f1f;
+$title-color: #1f1f1f;
+$body-color: #363636;
+$background-color: #f8f8f8;
+$border-color: #29afdc;
+
+// /* font weight */
+$very-light: 100;
+$light: 300;
+$light-italic: 300;
+$regular: 400;
+$regular-italic: 400;
+$medium: 500;
+$semibold: 600;
+$semibold-italic: 600;
+$bold: 700;
+$bold-italic: 700;
+
+/* img path */
+$img-path: "../img";
+$img-icons-path: "../img/icons";
+
+/* break points*/
+$bp-mobile: 600px;
+$bp-mobile-ls: 767px;
+$bp-tablet: 992px;
+$bp-large: 1300px;
