@@ -37,6 +37,10 @@ const SecurityQuestions = ({ history, id }: any) => {
 				res.then((data: any) => {
 					if (response.status === 200) {
 						history.push(`${AUTH_ROUTES}/login`);
+						notify(
+							"success",
+							"2FA setup completed successfully, please login to continue."
+						);
 					}
 				});
 			});

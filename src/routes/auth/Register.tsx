@@ -6,7 +6,7 @@ type RegistrationFrom = {
 	firstName: string;
 	lastName: string;
 	email: string;
-	username: string;
+	// username: string;
 	password: string;
 	confirmPassword: string;
 };
@@ -31,6 +31,10 @@ const Register = ({ history }: any) => {
 			const res: any = response.json();
 			res.then((data: any) => {
 				if (response.status === 201) {
+					notify(
+						"success",
+						"Successfully registered, setup your security question to complete!"
+					);
 					history.push(`/auth/security-questions/${data.authToken}`);
 				} else {
 					const error: any = Object.values(data);
@@ -73,7 +77,7 @@ const Register = ({ history }: any) => {
 					/>
 					{errors.lastName && <p className="error">Enter a valid last Name</p>}
 				</div>
-				<div className="input-wrap m-b-10">
+				{/* <div className="input-wrap m-b-10">
 					<label htmlFor="">Username</label>
 					<input
 						type="text"
@@ -83,7 +87,7 @@ const Register = ({ history }: any) => {
 						})}
 					/>
 					{errors.username && <p className="error">Enter a valid username</p>}
-				</div>
+				</div> */}
 				<div className="input-wrap m-b-10">
 					<label htmlFor="">Email</label>
 					<input

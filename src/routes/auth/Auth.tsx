@@ -22,7 +22,7 @@ const Auth = () => {
 				{key === "security-questions" && (
 					<SecurityQuestions history={history} id={id} />
 				)}
-				{key === "verify" && <VerifyLogin history={history} />}
+				{key === "verify" && <VerifyLogin history={history} id={id} />}
 			</div>
 		</div>
 	);

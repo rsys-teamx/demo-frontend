@@ -26,8 +26,15 @@ const Login = ({ history }: any) => {
 			const res: any = response.json();
 			res.then((data: any) => {
 				if (response.status === 200) {
-					console.log(data);
-					// history.push(`/auth/verify/uuid/${data.authToken}`);
+					window.localStorage.setItem(
+						"questions",
+						JSON.stringify(data.user.questions)
+					);
+					notify(
+						"success",
+						"user verified, please answer your security questions to continue"
+					);
+					history.push(`/auth/verify/${data.user.authToken}`);
 				} else {
 					const error: any = Object.values(data);
 					notify("error", error[0][0]);
@@ -43,20 +50,20 @@ const Login = ({ history }: any) => {
 			</h1>
 			<form className="form-group m-t-50" onSubmit={handleSubmit(loginHandler)}>
 				<div className="input-wrap m-b-10">
-					<label htmlFor="">Username</label>
+					<label htmlFor="">Email</label>
 					<input
 						type="text"
-						placeholder="Enter your username"
+						placeholder="Enter your email"
 						{...register("username", {
 							required: true,
-							// pattern: {
-							// 	value:
-							// 		/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-							// 	message: "Enter a valid username",
-							// },
+							pattern: {
+								value:
+									/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+								message: "Enter a valid username",
+							},
 						})}
 					/>
-					{errors.username && <p className="error">Enter a valid username</p>}
+					{errors.username && <p className="error">Enter a valid email</p>}
 				</div>
 				<div className="input-wrap m-b-10">
 					<label htmlFor="">Password</label>
