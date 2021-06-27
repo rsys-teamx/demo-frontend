@@ -1,12 +1,12 @@
-// import { useStoreActions } from "easy-peasy";
+import { useStoreActions } from "easy-peasy";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { notify } from "utils/utils";
 
 const VerifyLogin = ({ history, id }: any) => {
-	// const updateAuthToken = useStoreActions(
-	// 	(actions: any) => actions.auth.updateAuthToken
-	// );
+	const updateAuthToken = useStoreActions(
+		(actions: any) => actions.auth.updateAuthToken
+	);
 	const [questionsList, setQuestionsList] = useState<any>([]);
 	const {
 		register,
@@ -41,6 +41,7 @@ const VerifyLogin = ({ history, id }: any) => {
 			const res: any = response.json();
 			res.then((data: any) => {
 				if (response.status === 200) {
+					updateAuthToken(data.token.access);
 					notify("success", "Successfully verified!");
 					history.push(`/`);
 				} else {
