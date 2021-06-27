@@ -24,6 +24,7 @@ const SecurityQuestions = ({ history, id }: any) => {
 	};
 
 	const submitAnswerHandler = (formData: any) => {
+		console.log(formData);
 		if (Object.values(formData).length >= minCount) {
 			const requests = Object.values(formData);
 			let headers: any = { "Content-Type": "application/json" };
@@ -100,10 +101,11 @@ const SecurityQuestions = ({ history, id }: any) => {
 									const watchValues = Object.values(watch());
 									const isSelected =
 										watchValues.filter(
-											(val: any) => val.question === question.id
+											(val: any) => val.questionId === question.id
 										).length !== 0;
-									const iscurrentQuestion = !isEmpty(watch()[index]?.question)
-										? watch()[index]?.question === question.id
+
+									const iscurrentQuestion = !isEmpty(watch()[index]?.questionId)
+										? watch()[index]?.questionId === question.id
 										: false;
 									return (
 										(!isSelected || (isSelected && iscurrentQuestion)) && (
