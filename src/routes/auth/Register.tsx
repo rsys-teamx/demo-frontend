@@ -1,10 +1,12 @@
 import { AUTH_ROUTES } from "utils/route";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { notify } from "utils/utils";
 
 type RegistrationFrom = {
 	firstName: string;
 	lastName: string;
 	email: string;
+	username: string;
 	password: string;
 	confirmPassword: string;
 };
@@ -20,8 +22,22 @@ const Register = ({ history }: any) => {
 	});
 
 	const registrationHanlder: SubmitHandler<RegistrationFrom> = (formData) => {
-		console.log(formData);
-		history.push("/auth/security-questions/uuid");
+		let headers: any = { "Content-Type": "application/json" };
+		fetch(`http://localhost:8000/2fa-auth/register/`, {
+			method: "POST",
+			headers: headers,
+			body: JSON.stringify(formData),
+		}).then((response) => {
+			const res: any = response.json();
+			res.then((data: any) => {
+				if (response.status === 201) {
+					history.push(`/auth/security-questions/${data.authToken}`);
+				} else {
+					const error: any = Object.values(data);
+					notify("error", error[0][0]);
+				}
+			});
+		});
 	};
 
 	return (
@@ -56,6 +72,17 @@ const Register = ({ history }: any) => {
 						})}
 					/>
 					{errors.lastName && <p className="error">Enter a valid last Name</p>}
+				</div>
+				<div className="input-wrap m-b-10">
+					<label htmlFor="">Username</label>
+					<input
+						type="text"
+						placeholder="Enter your username"
+						{...register("username", {
+							required: true,
+						})}
+					/>
+					{errors.username && <p className="error">Enter a valid username</p>}
 				</div>
 				<div className="input-wrap m-b-10">
 					<label htmlFor="">Email</label>

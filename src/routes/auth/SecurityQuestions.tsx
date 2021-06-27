@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AUTH_ROUTES } from "utils/route";
-import { isEmpty } from "utils/utils";
+import { isEmpty, notify } from "utils/utils";
 
-const SecurityQuestions = ({ history }: any) => {
+const SecurityQuestions = ({ history, id }: any) => {
 	const {
 		register,
 		handleSubmit,
@@ -13,26 +13,8 @@ const SecurityQuestions = ({ history }: any) => {
 	const [formCount, setFormCount] = useState<any>([0]);
 	const [counter, setCounter] = useState(1);
 	const [minCount, setMinCount] = useState(1);
-	const [maxCount, setMaxCount] = useState(3);
-	const [questionList, setQuestionList] = useState([
-		{
-			uuId: 1,
-			question: "What is your last job?",
-		},
-		{
-			uuId: 2,
-			question: "What is your native place?",
-		},
-		{
-			uuId: 3,
-			question: "Who is your favourite sports person?",
-		},
-		{
-			uuId: 4,
-			question: "What is your firt vehicle?",
-		},
-	]);
-	const [selectedQuestions, setSelectedQuestions] = useState<any>([]);
+	const [maxCount, setMaxCount] = useState(1);
+	const [questionList, setQuestionList] = useState([]);
 
 	const addMoreQuestion = () => {
 		if (counter < maxCount) {
@@ -42,8 +24,54 @@ const SecurityQuestions = ({ history }: any) => {
 	};
 
 	const submitAnswerHandler = (formData: any) => {
-		history.push(`${AUTH_ROUTES}/login`);
+		if (Object.values(formData).length >= minCount) {
+			const requests = Object.values(formData);
+			let headers: any = { "Content-Type": "application/json" };
+			headers["authorization"] = `token ${id}`;
+			fetch(`http://localhost:8000/2fa-auth/auth-questions/`, {
+				method: "POST",
+				headers: headers,
+				body: JSON.stringify({ requests }),
+			}).then((response) => {
+				const res: any = response.json();
+				res.then((data: any) => {
+					if (response.status === 200) {
+						history.push(`${AUTH_ROUTES}/login`);
+					}
+				});
+			});
+		} else {
+			notify("error", `You should answer atleast ${minCount} question(s)`);
+		}
 	};
+
+	useEffect(() => {
+		let headers: any = { "Content-Type": "application/json" };
+		fetch(`http://localhost:8000/2fa-auth/questions/`, {
+			method: "GET",
+			headers: headers,
+		}).then((response) => {
+			const res: any = response.json();
+			res.then((data: any) => {
+				if (response.status === 200) {
+					setQuestionList(data);
+				}
+			});
+		});
+
+		fetch(`http://localhost:8000/2fa-auth/2fa-config/`, {
+			method: "GET",
+			headers: headers,
+		}).then((response) => {
+			const res: any = response.json();
+			res.then((data: any) => {
+				if (response.status === 200) {
+					setMaxCount(data.Config.registrationQuestionsCount);
+					setMinCount(data.Config.registrationMinAnswerCount);
+				}
+			});
+		});
+	}, []);
 
 	return (
 		<div className="login-container p-t-100 p-b-100 p-l-30 p-r-30">
@@ -59,7 +87,7 @@ const SecurityQuestions = ({ history }: any) => {
 					<div className="input-wrap m-b-20" key={index}>
 						<div className="select-wrap m-b-5">
 							<select
-								{...register(`${index}.question`, {
+								{...register(`${index}.questionId`, {
 									required: true,
 								})}
 							>
@@ -68,22 +96,21 @@ const SecurityQuestions = ({ history }: any) => {
 									const watchValues = Object.values(watch());
 									const isSelected =
 										watchValues.filter(
-											(val: any) =>
-												Number(val.question) === Number(question.uuId)
+											(val: any) => val.question === question.id
 										).length !== 0;
 									const iscurrentQuestion = !isEmpty(watch()[index]?.question)
-										? Number(watch()[index]?.question) === Number(question.uuId)
+										? watch()[index]?.question === question.id
 										: false;
 									return (
 										(!isSelected || (isSelected && iscurrentQuestion)) && (
-											<option value={question.uuId} key={question.uuId}>
-												{question.question}
+											<option value={question.id} key={question.id}>
+												{question.questionDesc}
 											</option>
 										)
 									);
 								})}
 							</select>
-							{errors[index]?.question && (
+							{errors[index]?.questionId && (
 								<p className="error">Select a question</p>
 							)}
 						</div>

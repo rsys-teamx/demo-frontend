@@ -7,7 +7,7 @@ import VerifyLogin from "./VerifyLogin";
 const Auth = () => {
 	const params: any = useParams();
 	const history: any = useHistory();
-	const { key } = params;
+	const { key, id } = params;
 	return (
 		<div className="main-container d-flex">
 			<div className="left-container col-md-7 d-flex align-items-center">
@@ -20,7 +20,7 @@ const Auth = () => {
 				{key === "login" && <Login history={history} />}
 				{key === "register" && <Register history={history} />}
 				{key === "security-questions" && (
-					<SecurityQuestions history={history} />
+					<SecurityQuestions history={history} id={id} />
 				)}
 				{key === "verify" && <VerifyLogin history={history} />}
 			</div>
